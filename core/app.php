@@ -7,4 +7,6 @@ if (getenv('PRODUCTION_MODE') === false) {
     error_reporting(E_ALL);
 }
 
+\Core\Router\Router::start();
+
 \Core\Database\Database::getInstance();
