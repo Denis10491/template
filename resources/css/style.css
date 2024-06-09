@@ -1,0 +1,28 @@
+@import url(./colors.css);
+@import url(./base.css);
+
+.container {
+    max-width: 100%;
+    margin: 0 20px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radius {
+    border-radius: 20px;
+}
+
+.shadow {
+    box-shadow: 0 0 5px var(--second-color);
+}
+
+.error-page {
+    height: 100vh;
+}
+.error-page h1 {
+    text-align: center;
+}
