@@ -1,0 +1,4 @@
+.DS_STORE
+.idea
+/docker/dbdata
+.env

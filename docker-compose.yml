@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: ${NGINX_CONTAINER}
+    restart: always
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+       - ./docker/nginx/hosts:/etc/nginx/conf.d
+       - ./:/var/www/html/template
+    networks:
+      - app
+
+  app:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    container_name: ${APP_NAME}
+    restart: always
+    depends_on:
+      - nginx
+      - db
+    volumes:
+       - ./:/var/www/html/template
+    networks:
+      - app
+
+  db:
+    image: mysql:latest
+    container_name: ${MYSQL_CONTAINER}
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+    volumes:
+      - ./docker/dbdata:/var/lib/mysql  
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
