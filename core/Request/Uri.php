@@ -33,13 +33,13 @@ class Uri implements UriInterface
     {
         $parts = parse_url($uri);
 
-        $this->withScheme($parts['scheme']);
-        $this->withHost($parts['host']);
-        $this->withPort($parts['port']);
-        $this->withUserInfo($parts['user'], $parts['pass']);
-        $this->withPath($parts['path']);
-        $this->withQuery($parts['query']);
-        $this->withFragment($parts['fragment']);
+        $this->withScheme($parts['scheme'] ?? '');
+        $this->withHost($parts['host'] ?? '');
+        $this->withPort($parts['port'] ?? null);
+        $this->withUserInfo($parts['user'] ?? '', $parts['pass'] ?? '');
+        $this->withPath($parts['path'] ?? '');
+        $this->withQuery($parts['query'] ?? '');
+        $this->withFragment($parts['fragment'] ?? '');
 
         return $this;
     }
