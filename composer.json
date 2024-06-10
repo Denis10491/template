@@ -1,0 +1,13 @@
+{
+    "name": "denis10491/template",
+    "description": "Personal template for creating a project in MVC vanilla PHP.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {
+        "psr/http-message": "^2.0"
+    }
+}
