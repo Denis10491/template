@@ -4,58 +4,58 @@ declare(strict_types=1);
 
 namespace Core\Router;
 
+use Core\Request\Request;
+use Core\Response\Response;
+
 final class Router
 {
-    public static string $controllerName = \App\Controllers\HomeController::class;
-    public static string $actionName = 'index';
-    public static array $data = [];
-    public static array $routes = [];
+    protected string $controllerName = \App\Controllers\HomeController::class;
+    protected string $actionName = 'index';
+    protected Request $request;
 
-
-    public static function start(array $params = []): void
+    public function __construct(Request $request)
     {
-        $uri = $_SERVER['REQUEST_URI'];
-        self::getRoutes($uri);
-        self::$data = $params ?? $_GET;
+        $this->request = $request;
+    }
 
-        foreach (self::$routes as $regexp => $actions) {
-            if (preg_match($regexp, $uri)) {
-                self::prepare(...$actions);
+    public function start(): void
+    {   
+        $routes = $this->loadRoutes();
+
+        foreach ($routes as $regexp => $actions) {
+            if (preg_match($regexp, $this->request->getUri()->getPath())) {
+                $this->prepare(...$actions);
             }
         }
 
-        self::execute();
+        $this->execute();
     }
 
-
-    private static function execute(): void
+    private function loadRoutes(): array
     {
-        $controller = new self::$controllerName;
-        $action = self::$actionName;
-        $controller->$action(self::$data);
-    }
+        $path = $this->request->getUri()->getPath();
+        $parts = explode('/', $path);
 
-    private static function getRoutes(string $uri): void
-    {
-        $routes = explode('/', $uri);
-        self::$routes = match ($routes[1]) {
-            'api' => include $_SERVER['DOCUMENT_ROOT'].'/routes/api.php',
-            default => include $_SERVER['DOCUMENT_ROOT'].'/routes/web.php',
+        return match ($parts[1]) {
+            'api' => require $_SERVER['DOCUMENT_ROOT'] . '/routes/api.php',
+            default => require $_SERVER['DOCUMENT_ROOT'] . '/routes/web.php',
         };
     }
 
-    private static function prepare(string $class, string $action, string $method = 'GET'): void
+    private function prepare(string $class, string $action, string $method = 'GET'): void
     {
-        if ($_SERVER['REQUEST_METHOD'] !== $method) {
-            return;
+        if ($this->request->getMethod() !== $method) {
+            (new Response())->back()->withStatus(405, 'Method not allowed');
         }
 
-        self::$controllerName = $class;
-        self::$actionName = $action;
+        $this->controllerName = $class;
+        $this->actionName = $action;
+    }
 
-        self::$data = match ($method) {
-            'GET' => self::$data,
-            'POST' => $_POST ?? json_decode(file_get_contents('php://input'), true, 512),
-        };
+    private function execute(): void
+    {
+        $controller = new $this->controllerName;
+        $action = $this->actionName;
+        $controller->$action($this->request);
     }
 }
