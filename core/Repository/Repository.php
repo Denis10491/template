@@ -36,15 +36,27 @@ abstract class Repository
     }
 
     /**
-     * If the model is missing, saves it to the repository.
+     * Saves the model to the repository directly through the property.
      * 
      * @param string $modelName
      * @param Model $model
      * 
      * @return [type]
      */
-    public function __set(string $modelName, Model $model)
+    public function __set(string $modelName, Model $model): void
     {
         $this->models[$modelName] = $model;
+    }
+
+    /**
+     * Return a model when accessing directly through a property.
+     * 
+     * @param string $modelName
+     * 
+     * @return Model
+     */
+    public function __get(string $modelName): Model | null
+    {
+        return $this->models[$modelName] ?? null;
     }
 }
