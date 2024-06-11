@@ -9,6 +9,8 @@
         }
     },
     "require": {
-        "psr/http-message": "^2.0"
+        "psr/http-message": "^2.0",
+        "psr/log": "^3.0",
+        "guzzlehttp/guzzle": "^7.8"
     }
 }
