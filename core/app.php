@@ -50,11 +50,3 @@ $request = (new Request())
  * =========================================
  */
 (new Router($request))->start();
-
-
-/**
- * =========================================
- * Initializing a Database connection
- * =========================================
- */
-Database::getInstance();
