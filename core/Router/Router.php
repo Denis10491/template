@@ -46,7 +46,7 @@ final class Router
         $path = $this->request->getUri()->getPath();
         $parts = explode('/', $path);
 
-        return match ($parts[1]) {
+        return match ($parts[1] ?? '') {
             'api' => require $_SERVER['DOCUMENT_ROOT'] . '/routes/api.php',
             default => require $_SERVER['DOCUMENT_ROOT'] . '/routes/web.php',
         };

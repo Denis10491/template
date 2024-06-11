@@ -12,7 +12,7 @@ class Response implements ResponseInterface
 {
     protected int $statusCode = 200;
     protected string $reasonPhrase = '';
-    protected StreamInterface $body = '';
+    protected StreamInterface $body;
     protected string $protocolVersion = '1.1';
     protected array $headers = [];
 
@@ -194,7 +194,8 @@ class Response implements ResponseInterface
     {
         http_response_code($this->getStatusCode());
 
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        $link = $_SERVER['HTTP_REFERER'] ?? '/';
+        header('Location: ' . $link);
 
         return $this;
     }

@@ -25,17 +25,24 @@ if (getenv('PRODUCTION_MODE') === false) {
     error_reporting(E_ALL);
 }
 
+/**
+ * =========================================
+ * Log mode
+ * =========================================
+ */
+ini_set('log_errors', true);
+ini_set('error_log', '/var/log/php_error.log');
+
 
 /**
  * =========================================
  * Forming a Request $request
  * =========================================
  */
-$uri = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $request = (new Request())
     ->withMethod($_SERVER['REQUEST_METHOD'])
     ->withRequestTarget('*')
-    ->withUri(new Uri($uri));
+    ->withUri(new Uri());
 
 /**
  * =========================================
