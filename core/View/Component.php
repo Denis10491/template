@@ -6,6 +6,14 @@ namespace Core\View;
 
 final class Component
 {
+    /**
+     * Renders and passes data to the component at /app/Views/Components/.
+     * 
+     * @param string $componentName
+     * @param array $data
+     * 
+     * @return void
+     */
     static public function render(string $componentName, array $data = []): void
     {
         if (isset($data)) {

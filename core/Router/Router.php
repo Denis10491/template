@@ -18,6 +18,11 @@ final class Router
         $this->request = $request;
     }
 
+    /**
+     * Starts the router.
+     * 
+     * @return void
+     */
     public function start(): void
     {   
         $routes = $this->loadRoutes();
@@ -31,6 +36,11 @@ final class Router
         $this->execute();
     }
 
+    /**
+     * Loads all routers from the routes directory depending on the request.
+     * 
+     * @return array
+     */
     private function loadRoutes(): array
     {
         $path = $this->request->getUri()->getPath();
@@ -42,6 +52,15 @@ final class Router
         };
     }
 
+    /**
+     * Accepts data from a matching route, prepares a request, checks for execution permission depending on the method.
+     * 
+     * @param string $class
+     * @param string $action
+     * @param string $method
+     * 
+     * @return void
+     */
     private function prepare(string $class, string $action, string $method = 'GET'): void
     {
         if ($this->request->getMethod() !== $method) {
@@ -52,6 +71,11 @@ final class Router
         $this->actionName = $action;
     }
 
+    /**
+     * Executes the request. a controller is created and a method is called depending on the route.
+     * 
+     * @return void
+     */
     private function execute(): void
     {
         $controller = new $this->controllerName;

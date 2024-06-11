@@ -18,6 +18,13 @@ trait Validator
         'string' => StringRule::class,
     ];
 
+    /**
+     * Accepts an array of names of checks that need to be performed and runs them.
+     * 
+     * @param array $checks
+     * 
+     * @return void
+     */
     public function __invoke(array $checks): void
     {
         foreach($checks as $variableName => $rules) {
@@ -32,6 +39,13 @@ trait Validator
         }
     }
 
+    /**
+     * Allows to get a Rule by key.
+     * 
+     * @param string $key
+     * 
+     * @return Rule
+     */
     protected function getRule(string $key): Rule
     {
         $rule = $this->rules[$key];
